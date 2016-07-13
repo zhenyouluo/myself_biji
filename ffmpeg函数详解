@@ -1,0 +1,3 @@
+av_read_frame((pFormatCtx, packet))读取每一帧的数据，并把数据保存到 packet
+ret = avcodec_decode_video2(pCodecCtx, (AVFrame)pFrame, &got_picture, packet);开始转码。ffmpeg中的avcodec_decode_video2()的作用是解码一帧视频数据。输入一个压缩编码的结构体AVPacket，输出一个解码后的结构体AVFrame
+

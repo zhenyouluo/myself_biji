@@ -1,0 +1,96 @@
+虚拟机里的Ubuntu使用cheese, guvcview这样的工具是可以获取图像的 	
+           kernel
+usb2.0->uvcvideo->v4l2 api->capture.c
+V4L2在设计时，是要支持很多广泛的设备的，它们之中只有一部分在本质上是真正的视频设备。
+kernel
+usb2.0->libusb-1.0.0->libuvc->libuvc.c (https://int80k.com/libuvc/doc/ 地址)
+
+
+
+
+
+
+
+
+
+
+
+
+在/sys/bus/usb/drivers/usb/1-1.3/这个目录下，查看idProduct和idVendor这两个文件，也会发现它们的值是046d和0825。046d是罗技公司的idVendor。
+UVC是在linux-2.6.38版本时加入内核的，那么更早的版本没有集成UVC。好在FriendlyARM提供内核版本是linux-3.0.8，里面集成了UVC驱动。在内核源代码的“Documentation/video4linux/uvcvideo.txt”中，是有关于UVC的说明。
+
+
+
+
+ modprobe -r uvcvideo;卸载模块
+ modprobe uvcvideo nodrop=1;安装模块
+ modprobe -r uvcvideo; modprobe uvcvideo nodrop=1
+
+gcc -o Helloworld example2.c ui.c `pkg-config --cflags --libs gtk+-2.0` -l uvc
+
+
+基于uvc的摄像头的移植 http://blog.csdn.net/zhaocj/article/details/38404521
+
+---------------------------
+http://m.blog.csdn.net/article/details?id=7331378
+查看摄像头：
+dmesg | grep video
+dmesg | grep Cam
+________________________________
+开发板：
+http://blog.csdn.net/huzgd/article/details/5276814  开发板挂载文件系统
+
+http://developer.t-firefly.com/thread-5069-1-10.html 【已找到root cause】UVC 摄像头预览失败，无法拍照
+
+
+_________________________________
+
+hexdump 查看图像信息
+_____________________________________________________
+python -m SimpleHTTPServer     启动一个http服务器
+readelf
+顾名思义，用于读取elf文件信息的工具。
+可见strings能输出文件中的可打印字符串（可指定字符串的最小长度），通常用来查看非文本文件（如二进制可执行文件）中的可读内容
+ldd : 列出一个可执行文件在运行时需要的共享库信息
+
+_______________________________
+
+058f:3820 Future Boy PC USB Webcam (Alcor Micro AU3820 chipset)
+http://blog.sina.com.cn/s/blog_55b759e60102viad.html
+_____________________________________________________
+
+
+./configure --host=mips-linux-gnu --prefix=/usr --disable-udev
+ make DESTDIR=/tmp/a install 应用程序指定安装路径
+
+
+ make modules_install INSTALL_MOD_PATH=/home/luther/gliethttp_dir 内核模块指定安装路径
+
+wildcard
+使用：SRC = $(wildcard *.c ./foo/*.c) 
+搜索当前目录及./foo/下所有以.c结尾的文件，生成一个以空格间隔的文件名列表，并赋值给SRC.当前目录文件只有文件名，子目录下的文件名包含路径信息，比如./foor/bar.c。
+1、wildcard : 扩展通配符
+2、notdir ： 去除路径
+3、patsubst ：替换通配符
+Makefile:
+LDFLAGS：gcc 等编译器会用到的一些优化参数，也可以在里面指定库文件的位置。用法：LDFLAGS=“-L/usr/lib 
+CFLAGS：和LDFLAGS类似，只不过要向里加如的是头文件（.h文件）的路径
+LIBS是要链接________________________
+rk3288开发板：
+要提取设备上的 parameter 文件，可以使用：
+
+   sudo rkflashkit backup @parameter parameter.txt
+
+对.img的解包：
+unmkbootimg --kernel zImage --ramdisk initrd.img -i ${1:-"linux-boot.img"}
+
+__________________
+http://developer.t-firefly.com/thread-983-1-12.html 对驱动 uvcvideo的分析
+http://blog.csdn.net/tankai19880619/article/details/9075839
+http://blog.csdn.net/tankai19880619/article/details/17259525 安卓调用底层的uvcvideo
+
+
+
+
+
+

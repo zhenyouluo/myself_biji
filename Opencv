@@ -1,0 +1,122 @@
+OpenCV 采用 BSD 协议，这是一个非常宽松的协议。
+
+http://www.opencv.org.cn/forum.php?mod=forumdisplay&fid=11 中文网站
+
+http://wiki.opencv.org.cn/index.php/%E9%A6%96%E9%A1%B5 API参考
+http://www.cnblogs.com/ma6174/archive/2011/12/10/2283393.html vim配置
+http://opencv.org/ opencv官网
+
+http://book.51cto.com/art/201605/510867.htm opencv总的网站
+
+g++ `pkg-config --cflags opencv` -o cvtest main1.cpp `pkg-config --libs opencv`
+
+http://blog.csdn.net/zhmxy555/article/list/2   技术博客
+
+一般来说：灰度图用2维矩阵表示，彩色（多通道）图像用3维矩阵来表示对于图像显示来说,目前大部分设备都是用无符号 8 位整
+数(类型为 CV_8U)表示像素亮度图像数据在计算机内存中的存储顺序为以图像最左上点(也可能是最左下
+点)开始
+
+
+Mat最大的优势跟STL很相似，都是对内存进行动态的管理，不需要之前用户手动的管理内存，
+Mat类表示一个 n 维的稠密数值型的单通道或多通道数组。它可以用于存储实数或复数值的向量和矩阵、灰度或彩色图像、体素、向量场、点云、张量、直方图 
+Mat 类是用于保存图像及其他矩阵数据的结构
+
+图像宽和高对应Mat的成员变量为：cols和rows。
+Mat A,C;
+A=imread();
+Mat B(A);//使用拷贝构造函数
+C=A;//赋值运算符
+赋值和拷贝构造函数，只是复制的信息头，不会复制矩阵
+-------------------------
+Mat F=A.clone();
+Mat G;
+A.copyTO(G);
+这样的操作会复制一个副图的矩阵
+--------------------
+加载/读入一个图片 mread(图片的名字，flag/图像的显示类型/可以省略) 如果在调用时忽略这个参数，就表示载入三通道的彩色图像。返回一个 Mat类型的图像信息
+flags >0返回一个3通道的彩色图像。
+flags =0返回灰度图像。
+flags <0返回包含Alpha通道的加载的图像。
+需要注意的点：输出的图像默认情况下是不载入Alpha通道进来的。如果我们需要载入Alpha通道的话呢，这里就需要取负值。
+mread("1.jpg",2|4) 2|4 载入无损的源图片
+0 载入灰度图
+199或者1 载入一个三通道的彩色图像。
+如果指定的格式与图片实际不符合，会自动转换为指定的格式
+-------------------------
+void nameWindow(const string& winname,int flags=WINDOW_AUTOSIZE);
+创建一个窗口
+---------------------------
+在指定的窗口中显示一幅图像。
+void imshow(const string& winname, InputArray mat);  
+
+------------------
+
+在进行腐蚀和膨胀的讲解之前，首先需要注意，腐蚀和膨胀是对白色部分（高亮部分）而言的，不是黑色部分。膨胀就是图像中的高亮部分进行膨胀，“领域扩张”，效果图拥有比原图更大的高亮区域。腐蚀就是原图中的高亮部分被腐蚀，“领域被蚕食”，效果图拥有比原图更小的高亮区域。
+Mat ff=getStructuringElement(MORPH_CROSS,Size(15,15));函数返回指定形状和尺寸的结构元素（内核矩阵）
+ff.creat(srcImage.size(),srcimage.type());创建一个和srcImage尺寸、形状类型一样的的矩阵
+--------------------------------
+边缘检测：
+Canny算法通常处理的图像为灰度图，因此如果摄像机获取的是彩色图像，那首先就得进行灰度化
+1：blur(原始图，Mat ss，Size())进行滤波、降燥功能
+2：cvtColor(输入图,输出图，CV_BGR2GRAY)转成灰度图
+3：Canny(输入图,输出图，)边缘检测
+
+canny边缘检测采用双阈值值法，高阈值用来检测图像中重要的、显著的线条、轮廓等，而低阈值用来保证不丢失细节部分，低阈值检测出来的边缘更丰富，但是很多边缘并不是我们关心的。最后采用一种查找算法，将低阈值中与高阈值的边缘有重叠的线条保留，其他的线条都删除。
+函数说明：
+
+第一个参数表示输入图像，必须为单通道灰度图。
+
+第二个参数表示输出的边缘图像，为单通道黑白图。
+
+第三个参数和第四个参数表示阈值，这二个阈值中当中的小阈值用来控制边缘连接，大的阈值用来控制强边缘的初始分割即如果一个像素的梯度大与上限值，则被认为是边缘像素，如果小于下限阈值，则被抛弃。如果该点的梯度在两者之间则当这个点与高于上限值的像素点连接时我们才保留，否则删除。
+
+第五个参数表示Sobel 算子大小，默认为3即表示一个3*3的矩阵。Sobel 算子与高斯拉普拉斯算子都是常用的边缘算子，详细的数学原理可以查阅专业书籍。
+----------------------------------
+imwrite(const string &filenam,InputArray img,const vector<int>&)
+把一个 （Mat img）的图像输入到 filename.jpg中 图像的格式是基于文件扩展名的，可保存的扩展名和
+imread中可以读取的图像扩展名一致
+--------------------
+创建滑动条：
+createTracbar()函数创建一个可以调整数值的滑动条，并将滑动条附加到指定的窗口，它往往陪和一个回调函数使用
+int createTracbar(conststring& trackname,conststring& winname，int *value,int count,TrackbarCallback onChange=0,void *userdata=0)
+第一个参数：滑动条的名字
+第二个参数 窗口的名字，namedWindow()创建窗口的名字
+第三个参数：一个指向整型指针，表示滑块的位置，在创建时，滑块的初始位置就是该变量的当前的值
+第四个参数：滑块的最大值
+第五个参数：指向回调函数的指针，每次滑块位置改变时这个函数进行回调，这个函数的原型必须是void xxxx(int ，void×)第一个参数是 滑块的的位置，第二个参数用户数据
+第六个参数：用户传给回调函数的数据，用来处理轨迹条事件。如果第三个参数是全局变量的话，完全可以不去管这个
+参数
+这个函数是每次滑动滑块，都会在初始值上进行加减(函数内部实现) 
+-----------------------------
+将两个图片叠加混合：
+ addWeighted(InputArray src1, double alpha, InputArray src2, double beta, double gamma, OutputArraydst, int dtype=-1)
+src1  //第一个原数组.      
+alpha  //第一个数组元素的权值  
+src2  //第二个原数组  
+beta  //第二个数组元素的权值  
+dst  //输出数组  
+gamma  //添加的常数项。  
+还有一种办法： 
+dst=src1*alpha+src2*beta
+之后直接imshow("",dst)
+------------------------------
+在某一副图上划出一片自己感兴趣的地方：
+Mat str2=image(Rect(x,y,图像的宽，图像的高));
+x,y为左上角的坐标 x为长，y为高
+只要操作感兴趣的区域，正副图都会有反应
+--------------------------------------
+int getTrackbarPos(NAME_TRACBAR,NAME_WINDOW) 获取进度条的进度值
+--------------------------------------------
+Mat M(2,2，CV_8UC3)
+
+打开一个摄像头并捕捉视频：
+VideoCapture capture;
+capture.open(1);//打开摄像头1
+while(1){
+      Mat fram;
+      capture.read(fram);//把视频读到fram里面
+
+}
+fram的图像格式是BGR
+
+

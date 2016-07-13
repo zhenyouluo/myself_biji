@@ -1,0 +1,85 @@
+或者将摄像头插到Linux机器上，直接使用命令luvcview获得当前摄像头所支持的所有数据格式以及分辨率信息：
+luvcview -L
+
+我使用下面程序检查摄像头是否支持 rgb240格式 的数据，为什么没反应的？
+struct v4l2_format fmt;
+  fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+  fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_RGB24;
+  
+   if( ioctl( vd->fd, VIDIOC_TRY_FMT, &fmt) == -1 )
+    if( errno == EINVAL )
+printf(" Not support format  RGB24!\n");
+
+else
+printf("support format RGB24 !\n");
+
+
+ffmpeg:
+ ffmpeg可以截取视频指定时间处的缩略图
+截取一张352x240尺寸大小的，格式为jpg的图片： 
+ffmpeg -i test.asf -y -f image2 -t 0.001 -s 352x240 a.jpg
+
+把视频的前３０帧转换成一个Animated Gif ： 
+ffmpeg -i test.asf -vframes 30 -y -f gif a.gif
+
+在视频的第8.01秒处截取 352*240 的缩略图
+ffmpeg -i test2.asf -y -f image2 -ss 08.010 -t 0.001 -s 352x240 b.jpg 
+http://blog.csdn.net/hemingwang0902/article/details/4382205这个有详细的参数解释 
+------------------------------------
+my.oschina.net/mingyuejingque/blog/488572
+ffmpeg 自定义数据来源， 可以是文件，可以是内存，可以是网络， 爱咋的咋的
+--------------------------------------------------------
+gcc ffmpeg_video2.c -O2 -o 1   -L/usr/local/lib -lz -lavformat -lavcodec  -lswscale  -lavutil -lSDL2 -lm -lpthread -lz
+ffmpeg -f video4linux2 -s 320*240 -r 10 -i /dev/video1 test.asf  用ffmpeg获取USB摄像头数据并存储到本地
+
+
+
+    gcc -g doc/examples/demuxing.c -o demuxing -lavcodec -lavdevice -lavfilter -lavformat -lavutil -lswscale -lswresample -lpostproc -lx264 -lmp3lame -lz -liconv -lbz2
+
+gcc simplest_ffmpeg_readcamera.cpp -g -o simplest_ffmpeg_readcamera.out \
+-framework Cocoa -I /usr/local/include -L /usr/local/lib -lSDLmain -lSDL -lavformat -lavcodec -lavutil -lavdevice -lswscale
+
+ubuntu14 apt-get 简单 安装 ffmpeg
+sudo add-apt-repository ppa:kirillshkrogalev/ffmpeg-next
+sudo apt-get update
+sudo apt-get install ffmpeg
+
+libavcodec-ffmpeg-dev libavcodec-ffmpeg-dev:i386 libswscale-ffmpeg-dev 
+  libswscale-ffmpeg-dev:i386 libavfilter-ffmpeg-dev 
+  libavfilter-ffmpeg-dev:i386 libavdevice-ffmpeg-dev 
+  libavdevice-ffmpeg-dev:i386 libpostproc-ffmpeg-dev 
+  libpostproc-ffmpeg-dev:i386 libavresample-ffmpeg-dev 
+  libavresample-ffmpeg-dev:i386 libavformat-ffmpeg-dev 
+  libavformat-ffmpeg-dev:i386 libavutil-ffmpeg-dev 
+  libavutil-ffmpeg-dev:i386 libswresample-ffmpeg-dev 
+  libswresample-ffmpeg-dev:i386 
+
+pkg-config --libs sdl
+
+
+
+https://git.archlinux.org/svntogit/packages.git/tree/trunk/PKGBUILD?h=packages/ffmpeg
+
+
+  ./configure \
+    --prefix='/usr' \
+    --disable-debug \
+    --disable-static \
+    --disable-stripping \
+    --enable-avisynth \
+    --enable-avresample \
+    --enable-fontconfig \
+    --enable-gnutls \
+    --enable-gpl \
+    --enable-shared \
+    --enable-version3 \
+    --enable-x11grab
+
+  make
+_____________________
+avformat_open_input()
+http://blog.csdn.net/leixiaohua1020/article/details/44064715
+
+
+http://git.oschina.net/leixiaohua1020/simplest_ffmpeg_device 读摄像头的数据
+_____________________________________________

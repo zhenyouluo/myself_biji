@@ -1,0 +1,8 @@
+可以同过QT来显示出来！定义一个Qimage类，将你得到的数据转换成rgb24后，将通过Qimage的frame->loadFromData（...）得到图像数据，在通过QPainter painter(this);
+painter.drawImage(0,0,*frame);
+显示出来！
+建议你学习一下QT
+
+
+
+MJPG_Streamer是一款免费的视频流服务器软件，采用的是V4L2视频设备开发框架，它能够将从摄像头采集到的图像以JPEG格式通过TCP/IP网络协议传输到上位机进行显示。

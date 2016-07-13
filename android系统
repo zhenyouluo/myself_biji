@@ -1,0 +1,33 @@
+am start -n com.android.music/.VideoBrowserActiv0 
+
+ am start -n com.android.camera/com.android.camera.Camera
+
+/sys/module 存着支持的 模块（uvcvideo）
+
+/system/lib/modules
+
+
+
+
+ Device Drivers                                                               │  
+  │       -> Multimedia support (MEDIA_SUPPORT [=y])                                    │  
+  │         -> Video capture adapters (VIDEO_CAPTURE_DRIVERS [=y])                      │  
+  │           -> V4L USB devices (V4L_USB_DRIVERS [=n])                                 │  
+  │   Selects: VIDEO_TUNER [=n] && VIDEO_SAA711X [=n]                                   │  
+  │                                                    
+
+
+
+
+
+在板子上usb摄像头的设备名不是 /dev/video0 ，应该是video7，具体需要查看 /sys/class/video4linux 了
+
+
+
+echo 0xffff > /sys/module/uvcvideo/parameters/trace
+使能/关闭调试的trace打印信息
+
+adb:http://blog.csdn.net/leokelly001/article/details/43485691
+
+
+am start -n com.android.camera2/com.android.camera.CameraActivity 启动摄像头

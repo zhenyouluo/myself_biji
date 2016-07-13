@@ -1,0 +1,1 @@
+在板子上usb摄像头的设备名不是 /dev/video0 ，应该是video7，具体需要查看 /sys/class/video4linux 了

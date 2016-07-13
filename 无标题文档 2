@@ -1,0 +1,119 @@
+diff --git a/android/device/actions/common/hardware/libcamera/OMXCameraAdapter/OMXCameraAdapter.cpp b/android/device/actions/common/hardware/libcamera/OMXCameraAdapter/OMXCameraAdapter.cpp
+index 5ffd7d8..d84afdf 100755
+--- a/android/device/actions/common/hardware/libcamera/OMXCameraAdapter/OMXCameraAdapter.cpp
++++ b/android/device/actions/common/hardware/libcamera/OMXCameraAdapter/OMXCameraAdapter.cpp
+@@ -4003,8 +4003,8 @@ bool OMXCameraAdapter::query_UVC_ReplaceMode(){
+     bool ret = false;
+     int mode =0;
+ 	
+-    //fix video3 as uvc device by agreement.
+-    const char *uvc_dev = "/dev/video3";
++    //fix video0 as uvc device by agreement.
++    const char *uvc_dev = "/dev/video0";
+ 
+     if (access(uvc_dev, R_OK) == 0)
+     {
+@@ -4032,7 +4032,7 @@ bool OMXCameraAdapter::query_UVC_ReplaceMode(){
+ *ActionsCode(author:liyuan, change_code)
+ */
+ bool OMXCameraAdapter::get_UVC_ReplaceMode(OMX_UVCMODE *mode, int SensorIndex){
+-    const char *uvc_dev = "/dev/video3";
++    const char *uvc_dev = "/dev/video0";
+ 
+     if((mUVCReplaceMode == OMX_UVC_AS_REAR &&SensorIndex==0) ||
+        (mUVCReplaceMode == OMX_UVC_AS_FRONT &&SensorIndex==1)){
+diff --git a/android/device/actions/common/hardware/libcamera/tests/camera_driver_test/config_1.c b/android/device/actions/common/hardware/libcamera/tests/camera_driver_test/config_1.c
+index 942f0e4..8efffb6 100755
+--- a/android/device/actions/common/hardware/libcamera/tests/camera_driver_test/config_1.c
++++ b/android/device/actions/common/hardware/libcamera/tests/camera_driver_test/config_1.c
+@@ -17,7 +17,7 @@ void load_config(void)
+ DEV_CAMERA_NAME = DEV_CAMERA_BACK_NAME;
+ 
+ 
+-DEV_CAMERA_FRONT_NAME = "/dev/video3";
++DEV_CAMERA_FRONT_NAME = "/dev/video0";
+ DEV_CAMERA_BACK_NAME = "/dev/video0";
+ 
+ 
+diff --git a/android/device/actions/common/hardware/omx/components/camera/v4l2_camera/base_v4l2_module.h b/android/device/actions/common/hardware/omx/components/camera/v4l2_camera/base_v4l2_module.h
+index b44e3c6..1b1880a 100755
+--- a/android/device/actions/common/hardware/omx/components/camera/v4l2_camera/base_v4l2_module.h
++++ b/android/device/actions/common/hardware/omx/components/camera/v4l2_camera/base_v4l2_module.h
+@@ -13,7 +13,7 @@ extern "C" {
+ 
+ #define MODULE_NAME_0 "/dev/video0"
+ #define MODULE_NAME_1 "/dev/video1"
+-#define MODULE_NAME_3 "/dev/video3"
++#define MODULE_NAME_3 "/dev/video0"
+ 
+ typedef enum {
+     MODE_NONE = -1,
+diff --git a/android/device/actions/lemaker_guitar_bbb/ueventd.gs705a.rc b/android/device/actions/lemaker_guitar_bbb/ueventd.gs705a.rc
+index 2a446fa..d84d76b 100755
+--- a/android/device/actions/lemaker_guitar_bbb/ueventd.gs705a.rc
++++ b/android/device/actions/lemaker_guitar_bbb/ueventd.gs705a.rc
+@@ -1,6 +1,6 @@
+ /dev/ttyS2                0660   root       root
+ /dev/ion                  0666   system     system
+-/dev/video*               0660   media      camera
++/dev/video*               0666   media      camera
+ /dev/de                   0640   system     system
+ /dev/hdmi                 0640   system     system
+ /dev/cvbs                 0640   system     system
+@@ -29,4 +29,4 @@
+ /dev/nvhost-ctrl 0666 root root
+ /dev/ppm_owl       0660   system     system
+ /dev/dvfs       0644   system     system
+-/sys/devices/system/cpu/cpu*   cpufreq/scaling_governor   0664  system system
+\ No newline at end of file
++/sys/devices/system/cpu/cpu*   cpufreq/scaling_governor   0664  system system
+diff --git a/android/frameworks/av/services/camera/libcameraservice/CameraService.cpp b/android/frameworks/av/services/camera/libcameraservice/CameraService.cpp
+index c8ec3fc..f90a9be 100755
+--- a/android/frameworks/av/services/camera/libcameraservice/CameraService.cpp
++++ b/android/frameworks/av/services/camera/libcameraservice/CameraService.cpp
+@@ -184,7 +184,7 @@ void CameraService::event_handler(struct inotify_event *event){
+     if(event){
+ 	if ( event->mask & IN_CREATE ) {
+ 		bool hasCameraOpend = false;
+-		if(!strcmp(event->name, "video3")){
++		if(!strcmp(event->name, "video0")){
+ 
+ 	    		for (int i = 0; i < mNumberOfCameras; i++) {
+ 				sp<BasicClient> client = mClient[i].promote();
+@@ -203,7 +203,7 @@ void CameraService::event_handler(struct inotify_event *event){
+         	}
+         	
+       	}else if ( event->mask & IN_DELETE ) {
+-		if(!strcmp(event->name, "video3")){
++		if(!strcmp(event->name, "video0")){
+ 			char value[PROPERTY_VALUE_MAX];
+ 			property_get("sys.camerahal.uvc_actmode_id", value, "0");
+ 		    	ALOGD("sys.camerahal.uvc_actmode_id=%s\n",value);
+diff --git a/kernel/drivers/media/usb/uvc/uvc_driver.c b/kernel/drivers/media/usb/uvc/uvc_driver.c
+index 55f7101..456c12e 100755
+--- a/kernel/drivers/media/usb/uvc/uvc_driver.c
++++ b/kernel/drivers/media/usb/uvc/uvc_driver.c
+@@ -1793,7 +1793,8 @@ static int uvc_register_video(struct uvc_device *dev,
+ 	video_set_drvdata(vdev, stream);
+ 
+ #ifdef CONFIG_ASOC_CAMERA
+-	ret = video_register_device(vdev, VFL_TYPE_GRABBER, uvc_video_device_node_number);
++	ret = video_register_device(vdev, VFL_TYPE_GRABBER, 0);
++	
+ #else
+ 	ret = video_register_device(vdev, VFL_TYPE_GRABBER, -1);
+ #endif
+diff --git a/kernel/drivers/media/usb/uvc/uvc_video.c b/kernel/drivers/media/usb/uvc/uvc_video.c
+index 32714a3..a220892 100755
+--- a/kernel/drivers/media/usb/uvc/uvc_video.c
++++ b/kernel/drivers/media/usb/uvc/uvc_video.c
+@@ -1667,6 +1667,9 @@ static int uvc_init_video(struct uvc_streaming *stream, gfp_t gfp_flags)
+ 				altsetting = alts->desc.bAlternateSetting;
+ 				best_psize = psize;
+ 				best_ep = ep;
++                uvc_trace(UVC_TRACE_VIDEO, "a  setting %u \n", altsetting);
++                if(altsetting == 1)
++                    break;
+ 			}
+ 		}
+ 

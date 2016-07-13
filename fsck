@@ -1,0 +1,5 @@
+fsck.ext4
+fsck.ext4
+cfdisk /dev/sdb 分区
+
+不懂待了解

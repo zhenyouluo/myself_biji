@@ -1,0 +1,359 @@
+http://yuedu.baidu.com/ebook/57b91b0625c52cc58ad6be31?pn=1&rf=http%3A%2F%2Fyuedu.baidu.com%2Febook%2F57b91b0625c52cc58ad6be31
+安卓中文翻译网站
+https://developer.android.com/reference/android/hardware/Camera.html?hl=zh-cn#open(int) API网站
+-------------------------------------------------
+Activity:
+活动最基本的Andriod应用程序组件，处理界面与UI互动
+简单理解 Activity 代表一个用户所能看到的屏幕,Activity 主要是处理一个应用的整体性工作,例如,监
+听系统事件(按键事件、触摸屏事件等)、为用户显示指定的 View,启动其他 Activity 等。所有应用的 Activity
+都继承于 android.app.Activity 类,该类是 Android 提供的基层类,其他的 Activity 继承该父类后,通过 Override
+父类的方法来实现各种功能,这种设计在其他领域也较为常见
+------------------------------------------------------------
+setContentView(R.layout.activity_main);得到内容视图
+每注册一个布局（layout目录下）的xxx.XML在R.java里面都会生成一个唯一的一个 xxx的ID
+不是布局的xxx.XML里面的变量会在R.java里面生成一个唯一的一个变量的ID
+@string/app_name 意思是，取string.xml里面的变量app_name 的值
+AndroidManifest.xml 程序的入口
+------------------------------------------------------
+Intent 是一个动作的完整描述,包含了动作的产生组件、接收组件和传递的数据信息。Android 则根据
+Intent 的描述,在不同组件间传递消息,负责找到对应的组件,将 Intent 传递给调用的组件,组件接收到
+传递的消息,执行相关动作,完成组件的调用。
+intent-filters：每当Activity要执行一个操作时候，它将会创建一个intent对象，这个对象能承载
+的信息可描述用户想要做什么，用户处理什么数据，数据类型，以及其他信息，而Android则会和每个Application
+所暴露的intent-filter的数据进行比较，找到最合适Activity来处理调用者所制定的数据和操作。
+------------------------------------------------
+eclipse工程的：
+src文件：项目源文件都保存在这个目录里面。
+R.java：所有xxx.XML的ID这个是自动生成的（存储该项目所有的资源索引）。
+Adroid xxxx：应用运行的库。
+assets：存放一些大文件：视频、音频、字体等，程序编译时不会被编译，只读不能写。
+res：资源文件，小的图片(drawable目录下，应用程序会用到的图片资源)、小的音频文件几布局文件(layout目录下)
+values：主要存放字符串、颜色、数组。
+---------------------------------------------------------
+Androidmainfest.xml：程序的入口文件，也是应用的配置文件
+
+Androidmainfest.xml解析：
+mainifest：跟节点
+application：应用程序一些全局和默认的属性，例如标签、icon、主题、必要的权限等。
+android:icon 应用程序的图标
+android:label 应用程序的名字
+android:name 应用程序默认启动的activit
+-----------------------------------------------------
+布局文件(layout)下面的xxx.xml文件：
+andriod:layout_height="wrap_content"//定义当前视图在屏幕所占的高度，随着文字栏位的不同而改变这个视图的宽带或高度。
+                       fill_parent/match_parent   //即填充整个屏幕
+--------------------------------------
+LinearLayout线性布局，即垂直和或者水平
+android:orientation="vertical"来指定是垂直布局
+
+android:gravity 是用于指定文字在控件中的对齐方式,而 android:layout_gravity 是用于指定控件在布局中的对齐方式
+
+需 要 注 意 , 当
+LinearLayout 的排列方向是 horizontal 时,只有垂直方向上的对齐方式才会生效,因为此时水
+平方向上的长度是不固定的,每添加一个控件,水平方向上的长度都会改变,因而无法指定
+该方向上的对齐方式
+
+如果 LinearLayout 的排列方向是 horizontal,内部的控件就绝对不能将
+宽度指定为 match_parent,因为这样的话单独一个控件就会将整个水平方向占满,其他的控
+件就没有可放置的位置了。同样的道理,如果 LinearLayout 的排列方向是 vertical,内部的控
+件就不能将高度指定为 match_parent
+
+android:layout_weight 属性,此时控件的宽度就不应该再由 android:layout_width 来决定
+android:layout_gravity="center_vertical"
+android:layout_weight 属性的值同时指定为 1 就会平分屏幕宽度
+有的的控件指定1 有的不指定 那么指定1的比不指定1的宽度要长
+
+如果想让 EditText 占据屏幕宽度的 3/5,Button 占据屏幕宽度的 2/5,只需要将 EditText 的
+layout_weight 改成 3,Button 的 layout_weight 改成 2 就可以了
+两种方式设置EditText不弹出软键盘：
+设置  
+android:focusable=""  
+            android:focusableInTouchMode=""  
+            属性为false 
+--------------------------------
+RelativeLayout:相对布局
+android:layout_below="@id/name" 位于×××的下面
+android:layout_alignParentRight="true" 位于×××的右半部分
+第一类:属性值为true或false 
+android:layout_centerHrizontal 水平居中 
+android:layout_centerVertical 垂直居中 
+android:layout_centerInparent 相对于父元素完全居中 
+android:layout_alignParentBottom 贴紧父元素的下边缘 
+android:layout_alignParentLeft 贴紧父元素的左边缘 
+android:layout_alignParentRight 贴紧父元素的右边缘 
+android:layout_alignParentTop 贴紧父元素的上边缘 
+android:layout_alignWithParentIfMissing 如果对应的兄弟元素找不到的话就以父元素做参照物
+
+第二类：属性值必须为id的引用名“@id/id-name” 
+android:layout_below 在某元素的下方 
+android:layout_above 在某元素的的上方 
+android:layout_toLeftOf 在某元素的左边 
+android:layout_toRightOf 在某元素的右边
+
+android:layout_alignTop 本元素的上边缘和某元素的的上边缘对齐 
+android:layout_alignLeft 本元素的左边缘和某元素的的左边缘对齐 
+android:layout_alignBottom 本元素的下边缘和某元素的的下边缘对齐 
+android:layout_alignRight 本元素的右边缘和某元素的的右边缘对齐
+
+第三类：属性值为具体的像素值，如30dip，40px 
+android:layout_marginBottom 离某元素底边缘的距离 
+android:layout_marginLeft 离某元素左边缘的距离 
+android:layout_marginRight 离某元素右边缘的距离 
+android:layout_marginTop 离某元素上边缘的距离
+-----------------------------------------------------
+TabLeayout:表格布局
+在Tablayout标签里面有TabRow子标签，这个就有点像HTML中的table一样的，每一个TableRow就相当于一行，TableLayout中有很多TableRow就有很多行，而每一个TableRow中又可以放一些标签，比如说像TextView等等， TableRow里面的标签都是水平排列的，有多少个TableRow就有多少个行，有多少个标签就相当于有多少列，利用这个可以做成一些类似于表格的东西。
+android:stretchColumns="1"它允许将 TableLayout 中的某一列
+进行拉伸,以达到自动适应屏幕宽度的作用
+
+-------------------------------
+FrameLayout：
+FrameLayout是最简单的布局了。所有放在布局里的控件，都按照层次堆叠在屏幕的左上角。后加进来的控件覆盖前面的控件。
+在FrameLayout布局里，定义任何空间的位置相关的属性都毫无意义。控件自动的堆放在左上角，根本不听你的控制。
+----------------------------------
+Button  bu=(Button)findViewById(R.id.button11);获得某个控件的资源
+/home/zhan/eclipse_work/TextView
+按钮信号实现：
+第一种办法：
+1：在layout目录下面的(activity_main.xml)
+<Button 
+    android:id="@+id/button11"
+    android:layout_width="wrap_content"
+android:layout_height="wrap_content" 
+   android:text="buton_click"
+   android:onClick="b_click" //信号函数
+    
+    />
+
+2：在MianActivity.java里面
+
+public class MainActivity extends Activity {
+	TextView show;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		show = (TextView)findViewById(R.id.action_settings);
+        Button  bu=(Button)findViewById(R.id.button11);
+------------------------------第二种办法------------------------------
+        bu.setOnClickListener(new Button.OnClickListener(){ //设置控件的按键事件监听器
+        	public void onClick(View v){
+        		show.setText("sadasdasdsa");
+        	}
+        	
+        });
+		resId
+------------------------------第二种办法--------------------------------
+	}
+	
+public void  b_click(View v) {
+		// TODO Auto-generated method stub
+                         show.setText("asdasdasdsa");
+	}
+
+-------------------------------------------------------------
+java里面的this：
+可以代表任何对象，当this出现在某个方法体中，它所代表的对象是不确定的，但它的类型是确定的，
+它所代表的对象只能是当前类，只有当这个方法被被调用时，它所代表的对象才被确定下来，
+谁在调用这个方法，this就代表谁。
+
+setTitle("asdasd")设置当前页面的标题
+
+
+
+RadioGroup:多个单选按钮的框架，
+
+mRadioGroup.clearCheck();清除单选，重新选择
+RadioGroup工程
+
+checkBoxs：
+check12.setChecked(false);设置复选框的选中状态
+
+ImageView:
+在xml里面 android:src="@目录/图片"指定图片显示的路径
+在java语言里面：
+mage_m.setImageResource(R.drawable.ic_launcher);  指定图片显示的路径
+我们可以通过代码来设置控件的可见性,使用的是：setVisibility()方法,可以传入 View.VISIBLE、View.INVISIBLE 和 View.GONE 三种值，visible 表示控件是可见的,这个值是
+默认值,不指定 android:visibility 时,控件都是可见的。invisible 表示控件不可见,但是它仍
+然占据着原来的位置和大小,可以理解成控件变成透明状态了。 gone 则表示控件不仅不可见,
+而且不再占用任何屏幕空间。
+-------------------------------------------
+ProgressBar:进度条
+progressBar.setVisibility(View.VISIBLE);设置控件为可见的
+if (progressBar.getVisibility() == View.GONE) 获取控件的状态
+int i=进度条.getProgress()获取当前的进度
+进度条.setProgress() 设置进度条的进度
+---------------------------------------------------
+AlertDialog:对话框可以在当前的界面弹出一个对话框,这个对话框是置顶于所有界面元素之上
+的,能够屏蔽掉其他控件的交互能力,因此一般 AlertDialog 都是用于提示一些非常重要的
+内容或者警告信息。
+AlertDialog.Builder dialog = new AlertDialog.Builder
+(MainActivity.this);新建一个对话框
+dialog.setTitle("This is Dialog");设置标题
+dialog.setMessage("Something important.");设置对话框的内容
+dialog.setCancelable(false);设置点击对话框外面的区域不退出，默认是true
+dialog.setPositiveButton("OK", new DialogInterface.         //添加确认按钮并添加点击按钮
+OnClickListener() {
+
+public void onClick(DialogInterface dialog, int which) {
+}
+});
+dialog.setNegativeButton 添加取消按钮
+pg.dismiss();取消显示
+pg.show（）;显示
+-------------------------
+progressDialog:ProgressDialog 和 AlertDialog 有点类似,都可以在界面上弹出一个对话框,都能够屏蔽
+掉其他控件的交互能力。不同的是,ProgressDialog 会在对话框中显示一个进度条,一般是
+用于表示当前操作比较耗时,让用户耐心地等待。它的用法和 AlertDialog 也比较相似
+
+——————————————————————————————————————————————————————————————————————————
+                         |----LinearLayout       
+         |---ViewGroup---|----............    
+         |               |___RalativeLayout
+	 |		       |-----Button
+ View----|----TextView---------|
+			       |____EditText
+	 |
+	 |____ImageView			   
+可以看到,我们所用的所有控件都是直接或间接继承自 View 的,所用的所有布局都是
+直接或间接继承自 ViewGroup 的。View 是 Android 中一种最基本的 UI 组件,它可以在屏幕
+上绘制一块矩形区域,并能响应这块区域的各种事件,因此,我们使用的各种控件其实就是
+在 View 的基础之上又添加了各自特有的功能
+
+
+
+eclipse添加一个布局文件的方法：
+点击layout文件-----new-- other---android(android  layout xml file)
+
+
+在JAVA类中使用super来引用父类的成分，用this来引用当前对象，如果一个类从另外一个类继承，我们new这个子类的实例对象的时候，这个子类对象里面会有一个父类对象。怎么去引用里面的父类对象呢？使用super来引用，this指的是当前对象的引用，super是当前对象里面的父对象的引用。
+
+-------------------------------
+LayoutInflater作用是将layout的xml布局文件实例化为View类对象。 
+1:
+从给定的context中获得
+
+    LayoutInflater inflater = LayoutInflater.from(context);
+
+    View view = inflater.inflate(R.layout.mian, null); 
+2:LayoutInflater.from(context).inflate(R.layout.title, this);
+1等同于2,
+-----------------------------------
+Arrydapter:适配器
+ListView 我们需要借助适配器来完成数据的添加。
+
+1：ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+MainActivity.this, android.R.layout.simple_list_item_1, data);
+ArrayAdapter 的构造函数中
+依次传入当前上下文、ListView 子项布局的 id,以及要适配的数据。注意我们使用了
+android.R.layout.simple_list_item_1 作为 ListView 子项布局的 id,这是一个 Android 内置的布
+局文件,里面只有一个 TextView,可用于简单地显示一段文本。这样适配器对象就构建好了
+Android.R.layout.simple_expandable_list_item_1是android里已提供的样式，我们也可换成自己的xml。但是需要注意的是这个xml文件仅能有一个textview。连Layout也不能有。否则会报错：ArrayAdapter requires the resource ID to be a TextView
+
+simple_list_item_1（单行显示）此布局显示最为简单，其中只有一个TextView
+myArrayAdapter.notifyDataSetChanged();作用是告知ListView刷新内容
+最后,还需要调用 ListView 的 setAdapter()方法,将构建好的适配器对象传递进去,这
+样 ListView 和数据之间的关联就建立完成了
+listView.setSelection(4);默认选择的项。
+-------------------------------------------------
+px 是像素的意思
+pt 是磅数的意思,1 磅等于 1/72 英寸,一般 pt 都会作为字体的单位来使用
+可以明显看出,同样 200px 宽的按钮在不同分辨率的屏幕上显示的效果是完全不同的,
+pt 的情况和 px 差不多,这导致这两个单位在手机领域上面很难有所发挥。
+谷歌当然也意识到了这个令人头疼了问题,于是为 Android 引入了一套新的单位 dp 和 sp
+dp 是密度无关像素的意思,也被称作 dip,和 px 相比,它在不同密度的屏幕中的显示比
+例将保持一致。
+sp 是可伸缩像素的意思,它采用了和 dp 同样的设计理念,解决了文字大小的适配问题
+用 dp 来指定控件的宽和高,就可以保证控件在不同密度的屏幕中的
+显示比例保持一致
+总结一下,在编写 Android 程序的时候,尽量将控件或布局的大小指定成 match_parent
+或 wrap_content,如果必须要指定一个固定值,则使用 dp 来作为单位,指定文字大小的时候
+使用 sp 作为单位。
+-------------------------------------------
+广播：Android 中的广播主要可以分为两种类型,标准广播和有序广播。
+标准广播(Normal broadcasts)是一种完全异步执行的广播,在广播发出之后,所有的
+广播接收器几乎都会在同一时刻接收到这条广播消息,因此它们之间没有任何先后顺序可
+言。这种广播的效率会比较高,但同时也意味着它是无法被截断的。
+有序广播(Ordered broadcasts)则是一种同步执行的广播,在广播发出之后,同一时刻
+只会有一个广播接收器能够收到这条广播消息,当这个广播接收器中的逻辑执行完毕后,广
+播才会继续传递。所以此时的广播接收器是有先后顺序的,优先级高的广播接收器就可以先
+收到广播消息,并且前面的广播接收器还可以截断正在传递的广播,这样后面的广播接收器
+就无法收到广播消息了
+------------------------------
+Toast.makeText(this,"我是Toast"，Toast.LENGTH_LONG).show();这是Android SDK中android.jar中的一个类. 作用是在界面上弹出一个悬浮提示框, 一段时间之后会自动消失.
+-----------------------------------------------------------------------------------------
+打开摄像头的界面讲解笔记：
+http://blog.csdn.net/yanzi1225627/article/details/33028041
+
+
+
+DisplayMetrics 这个类获取屏幕的像素
+
+
+ImageButton就是用一个图标代表了一些文字
+其他属性都和Button差不多
+
+
+SurfaceView是View类的子类，可以直接从内存或者DMA等硬件接口取得图像数据，是个非常重要的绘图视图。它的特性是：可以在主线程之外的线程中向屏幕绘图上。这样可以避免画图任务繁重的时候造成主线程阻塞，从而提高了程序的反应速度。在游戏开发中多用到SurfaceView，游戏中的背景、人物、动画等等尽量在画布canvas中画出。
+
+1）实现步骤
+
+    a．继承SurfaceView
+
+    b．实现SurfaceHolder.Callback接口
+
+2）需要重写的方法
+
+（1）public void surfaceChanged(SurfaceHolder holder,int format,int width,int height){}　　//在surface的大小发生改变时激发
+
+（2）public void surfaceCreated(SurfaceHolder holder){}　　//在创建时激发，一般在这里调用画图的线程。
+
+（3）public void surfaceDestroyed(SurfaceHolder holder) {}　　//销毁时激发，一般在这里将画图的线程停止、释放。
+3）SurfaceHolder
+
+　　SurfaceHolder,surface的控制器，用来操纵surface。处理它的Canvas上画的效果和动画，控制表面，大小，像素等。
+几个需要注意的方法：
+
+复制代码
+(1)、abstract void addCallback(SurfaceHolder.Callback callback);
+// 给SurfaceView当前的持有者一个回调对象。
+(2)、abstract Canvas lockCanvas();
+// 锁定画布，一般在锁定后就可以通过其返回的画布对象Canvas，在其上面画图等操作了。
+(3)、abstract Canvas lockCanvas(Rect dirty);
+// 锁定画布的某个区域进行画图等..因为画完图后，会调用下面的unlockCanvasAndPost来改变显示内容。
+// 相对部分内存要求比较高的游戏来说，可以不用重画dirty外的其它区域的像素，可以提高速度。
+(4)、abstract void unlockCanvasAndPost(Canvas canvas);
+// 结束锁定画图，并提交改变。
+
+代码网址：http://blog.csdn.net/xiong_it/article/details/45966309
+http://blog.csdn.net/xinzheng_wang/article/details/7712285
+4）总结整个过程
+
+　　继承SurfaceView并实现SurfaceHolder.Callback接口 ----> SurfaceView.getHolder()获得SurfaceHolder对象 ---->SurfaceHolder.addCallback(callback)添加回调函数---->SurfaceHolder.lockCanvas()获得Canvas对象并锁定画布----> Canvas绘画 ---->SurfaceHolder.unlockCanvasAndPost(Canvas canvas)结束锁定画图，并提交改变，将图形显示。
+
+Android应用程序采用Java语言编写，Java语法和C/C++有很大的相似性，但也有一些特别之处。Android中Interface的使用，从名字上看，Interface即为接口的意思，多用于实现回调（Call Back）方法
+Interface和Class的区别？
+Interface接口:可以理解成一种特殊的类,由常量和抽象方法组成的特殊类；接口不可以实例化；接口中的方法没有方法体；继承接口的类一定要实现接口中定义的方法。
+Class类：可以实例化；可以定义自己的字段，属性，方法等；类可以实现多个接口，但只能继承一个类。
+implements是一个类实现一个接口用的关键字，他是用来实现接口中定义的抽象方法，比如：people是一个接口，他里面有say这个方法。public interface people(){ public say();}但是接口没有方法体。只能通过一个具体的类去实现其中的方法体。比如chinese这个类，就实现了people这个接口。 public class chinese implements people{ public say() {System.out.println("你好！");}}
+
+
+ayoutParams继承于Android.View.ViewGroup.LayoutParams.
+LayoutParams相当于一个Layout的信息包，它封装了Layout的位置、高、宽等信息。假设在屏幕上一块区域是由一个Layout占领的，如果将一个View添加到一个Layout中，最好告诉Layout用户期望的布局方式，也就是将一个认可的layoutParams传递进去。
+可以这样去形容LayoutParams，在象棋的棋盘上，每个棋子都占据一个位置，也就是每个棋子都有一个位置的信息，如这个棋子在4行4列，这里的“4行4列”就是棋子的LayoutParams。
+
+
+object.setRotation(90);  把某个控件旋转90度
+
+
+
+
+
+
+
+
+
+
+
+
+

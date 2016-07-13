@@ -1,0 +1,7 @@
+默认的eclipse是不显示菜单的
+vim  /usr/share/applications/eclipse.desktop
+Exec=env UBUNTU_MENUPROXY=0 /home/zhan/eclipse/eclipse/eclipse
+加上这句话，每次启动的时候 在eclipse下面 执行 source /usr/share/applications/eclipse.desktop
+
+
+/home/zhan/下载/uvc_android/SurfaceViewDraw  

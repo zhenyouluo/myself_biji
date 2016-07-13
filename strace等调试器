@@ -1,0 +1,34 @@
+通过使用-o选项可以把strace命令的输出结果保存到一个文件中。
+strace -o uvc.strace ./1.out
+
+在调试的时候，strace能帮助你追踪到一个程序所执行的系统调用。当你想知道程序和操作系统如何交互的时候，这是极其方便的，比如你想知道执行了哪些系统调用，并且以何种顺序执行。
+ltrace能够跟踪进程的库函数调用,它会显现出哪个库函数被调用,而strace则是跟踪程序的每个系统调用.
+
+
+
+
+gdb:
+
+gcc -g -c 1.c -o 1.out
+加g参数 生成的可执行文件里面有调试信息，否则 gdb用不了。
+list 列出代码
+list 1 显示第一行代码
+list 1,10 显示1到10行的代码
+info breakpoints 查看断点。
+b 20 设置20行为断点
+disable/enable/delete 关闭/打开断点/删除断点
+run 运行整个程序，遇到断点时候停止，用next来执行吓一跳程序，c接着
+执行，直到遇到下个断点。
+段错误的调试方法：
+使用core文件和gdb 
+在一些Linux版本下，默认是不产生core文件的，首先可以查看一下系统core文件的大小限制：
+ulimit -a
+可以看到默认设置情况下，本机Linux环境下发生段错误时不会自动生成core文件，下面设置下core文件的大小限制（单位为KB）： 
+ulimit -c 1024 
+
+之后用gdb和core文件调试
+gdb 程序名 core文件名字
+
+用程序调试的时候 出现这种 就是段错误，可以输入 where 定位哪里段错误
+Program received signal SIGSEGV, Segmentation fault.
+

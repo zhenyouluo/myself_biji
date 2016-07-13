@@ -1,0 +1,1 @@
+接下来，我们修改一下android的camera hal层的控制，强制把设备文件指向video2，也就是这个USB Camera的设备文件，然后替换好这个库文件，运行camera apk

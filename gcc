@@ -1,0 +1,3 @@
+g++ -o 1 Test.cpp `pkg-config --libs opencv` -L. libTextureAS_arm.so
+
+-I参数是用来指定头文件目录  那编译命令行就要加上-I/myinclude参数了

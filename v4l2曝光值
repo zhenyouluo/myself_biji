@@ -1,0 +1,68 @@
+一些具体的设置，如曝光模式(Exposure Type)，曝光值(Exposure)，增益(Gain),白平衡(WHITE_BALANCE),亮度(BRIGHTNESS)，饱和度(SATURATION)，对比度(CONTRAST)等信息。可以通过VIDIOC_G_CTRL得到当前值。
+
+用法：APP 填写结构体中的id. 通过调用VIDIOC_G_CTRL，driver 会填写结构体中value项。
+struct v4l2_control ctrl;
+struct v4l2_control
+{
+ __u32 id;
+ __s32 value;
+};
+
+
+
+struct v4l2_queryctrl query;//查询的控制 查询的控制
+struct v4l2_queryctrl
+{
+ __u32 id;  //用户设置。指定查找的是哪个ID。
+ enum v4l2_ctrl_type type;
+ __u8 name[32];  //ID对应的名字。
+ __s32 minimum;
+ __s32 maximum;
+ __s32 step;   //步长
+ __s32 default_value;
+ __u32 flags;
+ __u32 reserved[2];
+};
+http://www.voidcn.com/blog/smilefyx/article/p-3314319.html
+1.得到和设置曝光模式。V4L2_CID_EXPOSURE_AUTO
+2.得到和设置曝光档次。V4L2_CID_EXPOSURE
+设置曝光绝对值：V4L2_CID_EXPOSURE_ABSOLUTE
+设置手动曝光的捕步骤：
+struct v4l2_control ctrl;
+    ctrl.id = V4L2_CID_EXPOSURE_AUTO;
+    int ret4 = ioctl(handle->fd, VIDIOC_G_CTRL, &ctrl);
+    if (ret4 < 0)
+    {
+    printf("Get exposure auto Type failed\n");
+    //return V4L2_UTILS_GET_EXPSURE_AUTO_TYPE_ERR;
+    }
+    printf("\nGet Exposure Auto Type:[%d]\n", ctrl.value);
+    // 1：得到曝光模式
+/**************************************************/
+
+
+    ctrl.id =V4L2_CID_EXPOSURE_AUTO;
+    ctrl.value=V4L2_EXPOSURE_MANUAL;
+   // ctrl.value=100;
+    int ret2 = ioctl(handle->fd, VIDIOC_S_CTRL, &ctrl);
+    if (ret2 < 0)
+    {
+    printf("Set exposure failed (%d)\n", ret2);
+    //return V4L2_UTILS_SET_EXPSURE_ERR;
+    }
+    printf("type is %d\n",ctrl.value);
+
+      //2：设置曝光模式为手动模式
+    /***************************************/
+    ctrl.id = V4L2_CID_EXPOSURE_ABSOLUTE;
+    ctrl.value = 500;
+    int ret3 = ioctl(handle->fd, VIDIOC_S_CTRL, &ctrl);
+    if (ret3 < 0)
+    {
+    printf("Set exposure failed (%d)\n", ret3);
+    //return V4L2_UTILS_SET_EXPSURE_ERR;
+    }
+    printf("value is %d\n",ctrl.value);
+    //3：在设置为手动模式后，再得到和设置曝光绝对值：
+    /**********************************/
+

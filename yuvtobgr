@@ -1,0 +1,33 @@
+static void I420ToRGB(unsigned char* src, unsigned char* bgr, int width, int height)
+{
+	int yy, v, u;
+	int frame_size = width*height;
+	int count = 0;
+
+	for (int x = 0; x < height; x++){
+		for (int y = 0; y < width; y++){
+			int p_y = x*width + y; //当前像素点y分量的位置
+			int p_v = frame_size + (x >> 1) * width + (y& ~1) + 0; //当前像素点v分量的位置
+			int p_u = frame_size + (x >> 1) * width + (y& ~1) + 1; //当前像素点u分量的位置
+			yy = src[p_y];
+			v = src[p_v];
+			u = src[p_u];
+
+			int r = yy + 1.402*(v - 128);
+			int g = yy - 0.34414*(u - 128) - 0.71414*(v - 128);
+			int b = yy + 1.772*(u - 128);
+
+			if (r < 0) r = 0;
+			if (r > 255) r = 255;
+			if (g < 0) g = 0;
+			if (g > 255) g = 255;
+			if (b < 0) b = 0;
+			if (b > 255) b = 255;
+
+			bgr[count++] = b;
+			bgr[count++] = g;
+			bgr[count++] = r;
+		}
+	}
+}
+

@@ -1,0 +1,61 @@
+uvcvideo-objs :=uvc_driver.o uvc_queue.o uvc_v4l2.o uvc_video.o uvc_ctrl.o \
+                 uvc_status.o uvc_isight.o uvc_debugfs.o
+obj-m += uvcvideo.o
+解释：
+obj-m+=a.o  把a.c文件编译成a.ko Makefiel文件自动查找a.c，因为是-m所以最终生成的是.ko（模块）文件
+只要在一个Makefile里面 所有的×.o文件都会被一起加载到a.o里面 最终生成一个a.ko模块。
+Makefile一些知识
+
+
+
+
+objects = foo.o bar.o
+
+all: $(objects)
+
+$(objects): %.o: %.c
+$(CC) -c $(CFLAGS) $< -o $@
+
+$<”表示所有的依赖目标集（也就是“foo.c bar.c”），“$@”表示目标集（也就是“foo.o bar.o”）
+= 是最基本的赋值
+:= 是覆盖之前的值
+?= 是如果没有被赋值过就赋予等号后面的值
++= 是添加等号后面的值
+
+、关于命令参数的变量
+
+下面的这些变量都是相关上面的命令的参数。如果没有指明其默认值，那么其默认值都是空。
+
+ARFLAGS
+函数库打包程序AR命令的参数。默认值是“rv”。
+ASFLAGS
+汇编语言编译器参数。（当明显地调用“.s”或“.S”文件时）。
+CFLAGS
+C语言编译器参数。
+CXXFLAGS
+C++语言编译器参数。
+COFLAGS
+RCS命令参数。
+CPPFLAGS
+C预处理器参数。（ C 和 Fortran 编译器也会用到）。
+FFLAGS
+Fortran语言编译器参数。
+GFLAGS
+SCCS “get”程序参数。
+LDFLAGS
+链接器参数。（如：“ld”）
+LFLAGS
+Lex文法分析器参数。
+PFLAGS
+Pascal语言编译器参数。
+RFLAGS
+Ratfor 程序的Fortran 编译器参数。
+YFLAGS
+Yacc文法分析器参数。
+
+dmesg | tail -20  时刻监视内核，并在屏幕上显示20行
+
+
+
+
+
